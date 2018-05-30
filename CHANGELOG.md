@@ -1,4 +1,11 @@
-## 1.0.1 (Unreleased)
+## 2.0.1 (May 2, 2018)
+
+Bug fix for missing ID in update log call
+
+## 2.0.1 (May 2, 2018)
+
+New logentries client github.com/depop/logentries
+
 ## 1.0.0 (April 23, 2018)
 
 FEATURES:

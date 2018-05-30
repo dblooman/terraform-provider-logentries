@@ -1,8 +1,7 @@
 {
 	"comment": "",
 	"ignore": "test",
-	"package": [
-		{
+	"package": [{
 			"checksumSHA1": "jQh1fnoKPKMURvKkpdRjN695nAQ=",
 			"origin": "github.com/hashicorp/terraform/vendor/github.com/agext/levenshtein",
 			"path": "github.com/agext/levenshtein",
@@ -234,10 +233,10 @@
 			"revisionTime": "2017-12-08T00:32:56Z"
 		},
 		{
-			"checksumSHA1": "ObgXXCHRQq/31Aw7NPrlX/FMBdM=",
+			"checksumSHA1": "oTOhcnsWqoXCDYZQ3fyEN9Z0P8A=",
 			"path": "github.com/depop/logentries",
-			"revision": "cb5002751fec26bbf75f2b0b45d6748d589e07e9",
-			"revisionTime": "2018-05-09T16:12:41Z"
+			"revision": "7a343829018dbcd40cc7ec466c7fabfb7fe00481",
+			"revisionTime": "2018-05-30T10:22:56Z"
 		},
 		{
 			"checksumSHA1": "1K+xrZ1PBez190iGt5OnMtGdih4=",

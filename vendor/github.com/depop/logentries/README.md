@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-  client := logentries.New{}
+  client := logentries.New("api-key")
   resp, err := client.LogSet.Create(&logentries.LogSetCreateRequest{
   	logentries.LogSetFields{
   		Name: "foobar",

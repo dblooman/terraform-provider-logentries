@@ -116,12 +116,13 @@ func resourceLogentriesLogUpdate(d *schema.ResourceData, meta interface{}) error
 	_, err := client.Log.Update(&logentries.LogUpdateRequest{
 		ID: d.Id(),
 		Log: logentries.LogUpdateRequestFields{
+			Name: d.Get("name").(string),
 			UserData: logentries.LogUserData{
 				LeAgentFilename: d.Get("filename").(string),
 			},
 			LogsetsInfo: []logentries.LogsetsInfo{
 				logentries.LogsetsInfo{
-					Name: d.Get("name").(string),
+					ID: d.Get("logset_id").(string),
 				},
 			},
 		},

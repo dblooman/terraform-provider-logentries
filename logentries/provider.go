@@ -25,6 +25,10 @@ func Provider() terraform.ResourceProvider {
 			"logentries_logset": resourceLogentriesLogSet(),
 		},
 
+		DataSourcesMap: map[string]*schema.Resource{
+			"logentries_logset": dataSourceLogentriesLogSet(),
+		},
+
 		ConfigureFunc: providerConfigure,
 	}
 }

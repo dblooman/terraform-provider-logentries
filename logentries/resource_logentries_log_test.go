@@ -5,10 +5,10 @@ import (
 	"testing"
 
 	"github.com/depop/logentries"
+	lexp "github.com/depop/terraform-provider-logentries/logentries/expect"
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	lexp "github.com/terraform-providers/terraform-provider-logentries/logentries/expect"
 )
 
 func TestAccLogentriesLog_Token(t *testing.T) {

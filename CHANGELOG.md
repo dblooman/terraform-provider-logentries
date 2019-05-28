@@ -1,3 +1,9 @@
+## 2.1.0 (May 28, 2019)
+
+Upgrade to version 0.12 of terraform
+Add data source for logset
+Use Go mod
+
 ## 2.0.1 (May 2, 2018)
 
 Bug fix for missing ID in update log call

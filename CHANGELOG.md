@@ -1,3 +1,8 @@
+## 2.1.1 (April 8, 2020)
+
+Don't vendor dependencies
+Update goreleaser
+
 ## 2.1.0 (May 28, 2019)
 
 Upgrade to version 0.12 of terraform

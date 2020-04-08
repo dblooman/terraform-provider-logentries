@@ -2,10 +2,7 @@ package logentries
 
 import (
 	"fmt"
-	"log"
-	"strings"
-
-	logentries "github.com/depop/logentries"
+	"github.com/depop/logentries"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -16,12 +13,17 @@ func resourceLogentriesLog() *schema.Resource {
 		Read:   resourceLogentriesLogRead,
 		Update: resourceLogentriesLogUpdate,
 		Delete: resourceLogentriesLogDelete,
+		Exists: resourceLogentriesLogExists,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"token": {
-				Type:     schema.TypeString,
-				Computed: true,
-				ForceNew: true,
+				Type:      schema.TypeString,
+				Computed:  true,
+				ForceNew:  true,
+				Sensitive: true,
 			},
 			"logset_id": {
 				Type:     schema.TypeString,
@@ -34,6 +36,7 @@ func resourceLogentriesLog() *schema.Resource {
 			},
 			"filename": {
 				Type:     schema.TypeString,
+				Default:  "logentries",
 				Optional: true,
 			},
 			"source": {
@@ -42,17 +45,12 @@ func resourceLogentriesLog() *schema.Resource {
 				Default:  "token",
 				ValidateFunc: func(v interface{}, k string) (ws []string, errors []error) {
 					value := v.(string)
-					allowed_values := []string{"token", "syslog", "agent", "api"}
-					if !sliceContains(value, allowed_values) {
-						errors = append(errors, fmt.Errorf("Invalid log source option: %s (must be one of: %s)", value, allowed_values))
+					allowedValues := []string{"token", "syslog", "agent", "api"}
+					if !sliceContains(value, allowedValues) {
+						errors = append(errors, fmt.Errorf("Invalid log source option: %s (must be one of: %s)", value, allowedValues))
 					}
 					return
 				},
-			},
-			"type": {
-				Type:     schema.TypeString,
-				Default:  "",
-				Optional: true,
 			},
 		},
 	}
@@ -62,14 +60,14 @@ func resourceLogentriesLogCreate(d *schema.ResourceData, meta interface{}) error
 	client := meta.(*logentries.Client)
 
 	res, err := client.Log.Create(&logentries.LogCreateRequest{
-		logentries.LogCreateRequestFields{
+		Log: logentries.LogCreateRequestFields{
 			Name:       d.Get("name").(string),
 			SourceType: d.Get("source").(string),
 			UserData: logentries.LogUserData{
 				LeAgentFilename: d.Get("filename").(string),
 			},
 			LogsetsInfo: []logentries.LogsetsInfo{
-				logentries.LogsetsInfo{
+				{
 					ID: d.Get("logset_id").(string),
 				},
 			},
@@ -89,23 +87,42 @@ func resourceLogentriesLogCreate(d *schema.ResourceData, meta interface{}) error
 	return resourceLogentriesLogRead(d, meta)
 }
 
+func resourceLogentriesLogExists(d *schema.ResourceData, meta interface{}) (bool, error) {
+	client := meta.(*logentries.Client)
+	_, err := client.Log.Read(&logentries.LogReadRequest{
+		ID: d.Id(),
+	})
+	if err != nil {
+		if err == logentries.ErrNotFound {
+			return false, nil
+		}
+		return false, err
+	}
+
+	return true, err
+}
+
 func resourceLogentriesLogRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*logentries.Client)
 	res, err := client.Log.Read(&logentries.LogReadRequest{
 		ID: d.Id(),
 	})
+
 	if err != nil {
-		if strings.Contains(err.Error(), "not found") {
-			log.Printf("Logentries Log Not Found - Refreshing from State")
-			d.SetId("")
-			return nil
-		}
 		return err
 	}
 
-	if res == nil {
-		d.SetId("")
-		return nil
+	d.SetId(res.ID)
+	d.Set("name", res.Name)
+	d.Set("filename", res.UserData.LeAgentFilename)
+	d.Set("source", res.SourceType)
+
+	if len(res.Tokens) > 0 {
+		d.Set("token", res.Tokens[0])
+	}
+
+	if len(res.LogsetsInfo) > 0 {
+		d.Set("logset_id", res.LogsetsInfo[0].ID)
 	}
 
 	return nil
@@ -121,7 +138,7 @@ func resourceLogentriesLogUpdate(d *schema.ResourceData, meta interface{}) error
 				LeAgentFilename: d.Get("filename").(string),
 			},
 			LogsetsInfo: []logentries.LogsetsInfo{
-				logentries.LogsetsInfo{
+				{
 					ID: d.Get("logset_id").(string),
 				},
 			},

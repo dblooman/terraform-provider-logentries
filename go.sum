@@ -64,6 +64,8 @@ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/depop/logentries v0.0.0-20190528141714-cf541324c208/go.mod h1:YfUk/UZKEqTlU5HnDS2NKz2kUKWB+RmB2LAIJYOxoOs=
 github.com/depop/logentries v0.0.1 h1:rXS+294MeG1XTWCxQiHEy3gXh0Nc0SoKVIEPZ3l0IrE=
 github.com/depop/logentries v0.0.1/go.mod h1:i5axmJYPlZU3OjpoaZm7/PWcMy5t8/uQHrnc1daWRTw=
+github.com/depop/logentries v0.1.0 h1:hWvXgBo8CJicaN7TaASdGGRQwo3wBr9nNnKP5SrfHs0=
+github.com/depop/logentries v0.1.0/go.mod h1:i5axmJYPlZU3OjpoaZm7/PWcMy5t8/uQHrnc1daWRTw=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dimchansky/utfbom v1.0.0/go.mod h1:rO41eb7gLfo8SF1jd9F8HplJm1Fewwi4mQvIirEdv+8=
 github.com/dnaeon/go-vcr v0.0.0-20180920040454-5637cf3d8a31/go.mod h1:aBB1+wY4s93YsC3HHjMBMrwTj2R9FHDzUr9KyGc8n1E=

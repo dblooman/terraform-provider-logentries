@@ -3,7 +3,7 @@ package logentries
 import (
 	"errors"
 
-	logentries "github.com/depop/logentries"
+	"github.com/depop/logentries"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -21,12 +21,8 @@ func dataSourceLogentriesLogSet() *schema.Resource {
 }
 
 func dataSourceLogentriesLogSetRead(d *schema.ResourceData, meta interface{}) error {
-
 	client := meta.(*logentries.Client)
 	res, err := client.LogSets.Read(&logentries.LogSetsReadRequest{})
-	if err != nil {
-		panic(err)
-	}
 	if err != nil {
 		return err
 	}

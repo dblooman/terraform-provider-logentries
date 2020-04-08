@@ -1,10 +1,7 @@
 package logentries
 
 import (
-	"log"
-	"strings"
-
-	logentries "github.com/depop/logentries"
+	"github.com/depop/logentries"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -15,18 +12,37 @@ func resourceLogentriesLogSet() *schema.Resource {
 		Read:   resourceLogentriesLogSetRead,
 		Update: resourceLogentriesLogSetUpdate,
 		Delete: resourceLogentriesLogSetDelete,
+		Exists: resourceLogentriesLogSetExists,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"description": &schema.Schema{
+			"description": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
 		},
 	}
+}
+
+func resourceLogentriesLogSetExists(d *schema.ResourceData, meta interface{}) (bool, error) {
+	client := meta.(*logentries.Client)
+	_, err := client.Log.Read(&logentries.LogReadRequest{
+		ID: d.Id(),
+	})
+	if err != nil {
+		if err == logentries.ErrNotFound {
+			return false, nil
+		}
+		return false, err
+	}
+
+	return true, err
 }
 
 func resourceLogentriesLogSetCreate(d *schema.ResourceData, meta interface{}) error {
@@ -51,21 +67,14 @@ func resourceLogentriesLogSetRead(d *schema.ResourceData, meta interface{}) erro
 	res, err := client.LogSet.Read(&logentries.LogSetReadRequest{
 		ID: d.Id(),
 	})
+
 	if err != nil {
-		if strings.Contains(err.Error(), "No such log set") {
-			log.Printf("Logentries LogSet Not Found - Refreshing from State")
-			d.SetId("")
-			return nil
-		}
 		return err
 	}
 
-	if res == nil {
-		d.SetId("")
-		return nil
-	}
-
 	d.SetId(res.ID)
+	d.Set("name", res.Name)
+	d.Set("description", res.Description)
 
 	return nil
 }

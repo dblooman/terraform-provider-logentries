@@ -1,3 +1,7 @@
+## 2.1.2 (April 8, 2020)
+
+Add support for terraform import
+
 ## 2.1.1 (April 8, 2020)
 
 Don't vendor dependencies

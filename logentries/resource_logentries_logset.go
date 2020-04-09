@@ -32,7 +32,7 @@ func resourceLogentriesLogSet() *schema.Resource {
 
 func resourceLogentriesLogSetExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	client := meta.(*logentries.Client)
-	_, err := client.Log.Read(&logentries.LogReadRequest{
+	_, err := client.LogSet.Read(&logentries.LogSetReadRequest{
 		ID: d.Id(),
 	})
 	if err != nil {

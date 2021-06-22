@@ -1,6 +1,6 @@
 module github.com/depop/terraform-provider-logentries
 
-go 1.12
+go 1.16
 
 require (
 	github.com/depop/logentries v0.1.0

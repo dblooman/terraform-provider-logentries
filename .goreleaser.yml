@@ -10,9 +10,11 @@ builds:
       - darwin
     goarch:
       - amd64
+      - arm64
     targets:
       - linux_amd64
       - darwin_amd64
+      - darwin_arm64
     main: .
     ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
     binary: terraform-provider-logentries
